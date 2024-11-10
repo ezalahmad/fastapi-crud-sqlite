@@ -25,8 +25,10 @@ def get_db():
         db.close()
 
 @app.get("/")
-def home(request: Request):
-    return templates.TemplateResponse("index.html", {"request": request})
+def home(request: Request, db: Session = Depends(get_db)):
+    todos = db.query(models.Todo).all()
+    return templates.TemplateResponse("index.html",
+                                      {"request": request, "todo_list": todos})
 
 @app.post("/add")
 def add(request: Request, title: str = Form(...), db: Session = Depends(get_db)):
