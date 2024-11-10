@@ -40,17 +40,23 @@
                     </tr>
                 </thead>
                 <tbody>
+                    {% for todo in todo_list %}
                     <tr>
-                      <th scope="row">1</th>
-                      <td>Do laundry</td>
+                      <th scope="row">{{todo.id }}</th>
+                      <td>{{ todo.title }}</td>
                       <td>
+                        {% if todo.complete == False %}
                         <div class="alert alert-secondary" role="alert">In progress</div>
+                        {% else %}
+                        <div class="alert alert-success" role="alert">Completed</div>
+                        {% endif %}
                       </td>
                       <td>
-                        <a class="btn btn-success" href="/update/1">Update</a>
-                        <a class="btn btn-danger ms-1" href="/delete/1">Delete</a>
+                        <a class="btn btn-success" href="/update/{{ todo.id }}">Update</a>
+                        <a class="btn btn-danger ms-1" href="/delete/{{ todo.id }}">Delete</a>
                       </td>
                     </tr>
+                    {% endfor %}
                 </tbody>
             </table>
           </div>
