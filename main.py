@@ -39,3 +39,12 @@ def add(request: Request, title: str = Form(...), db: Session = Depends(get_db))
     url = app.url_path_for("home")
     return RedirectResponse(url=url, status_code=status.HTTP_303_SEE_OTHER)
 
+@app.get("/update/{todo_id}")
+def update(request: Request, todo_id: int, db: Session = Depends(get_db)):
+    todo = db.query(models.Todo).filter(models.Todo.id == todo_id).first()
+    todo.complete = not todo.complete
+    db.commit()
+
+    url = app.url_path_for("home")
+    return RedirectResponse(url=url, status_code=status.HTTP_302_FOUND)
+
