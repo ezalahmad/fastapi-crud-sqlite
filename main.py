@@ -57,3 +57,19 @@ def delete(request: Request, todo_id: int, db: Session = Depends(get_db)):
     url = app.url_path_for("home")
     return RedirectResponse(url=url, status_code=status.HTTP_302_FOUND)
 
+
+@app.get("/edit/{todo_id}")
+def edit_form(request: Request, todo_id: int, db: Session = Depends(get_db)):
+    todo = db.query(models.Todo).filter(models.Todo.id == todo_id).first()
+    return templates.TemplateResponse("edit.html", {"request": request, "todo": todo})
+
+@app.post("/edit/{todo_id}")
+def edit(todo_id: int, title: str = Form(...), db: Session = Depends(get_db)):
+    todo = db.query(models.Todo).filter(models.Todo.id == todo_id).first()
+    todo.title = title
+    db.commit()
+
+    url = app.url_path_for("home")
+    return RedirectResponse(url=url, status_code=status.HTTP_303_SEE_OTHER)
+
+

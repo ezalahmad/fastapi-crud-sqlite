@@ -38,4 +38,5 @@ Type "help", "copyright", "credits" or "license" for more information.
 >>> from fastapi.templating import Jinja2Templates
 ```
 
+Launch the application using `uvicorn main:app --reload` or `fastapi dev main.py`
 
